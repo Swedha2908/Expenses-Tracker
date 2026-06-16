@@ -108,27 +108,25 @@ export default function Transactions() {
   return (<>
     <div className="p-8 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-     {/* LEFT COLUMN: Form */}
+      {/* LEFT COLUMN: Form */}
       <div className="lg:col-span-1">
         <div className="bg-white p-6 rounded-2xl shadow-xl border border-gray-100">
           <h2 className="text-2xl font-extrabold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">
             {editingId ? '✨ Edit Transaction' : '✨ Add Transaction'}
           </h2>
-          
+
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* Type */}
             <div>
               <label className="block text-sm font-bold text-slate-700 mb-1">Type</label>
               <select
                 name="type"
+                required // Adding required ensures the user must pick a valid type
                 value={formData.type}
                 onChange={handleInputChange}
-                className={`block w-full p-3 border-2 rounded-xl focus:outline-none transition-colors font-bold ${
-                  formData.type === 'Income'
-                    ? 'border-green-200 focus:border-green-500 focus:ring-4 focus:ring-green-50 text-green-700 bg-green-50/50'
-                    : 'border-red-200 focus:border-red-500 focus:ring-4 focus:ring-red-50 text-red-700 bg-red-50/50'
-                }`}
+                className="w-full p-3 bg-white/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition-all"
               >
+                <option value="" disabled>Choose</option>
                 <option value="Income">Income</option>
                 <option value="Expense">Expense</option>
               </select>
@@ -201,7 +199,7 @@ export default function Transactions() {
               >
                 {editingId ? 'Update Transaction' : 'Save Transaction'}
               </button>
-              
+
               {editingId && (
                 <button
                   type="button"
@@ -218,7 +216,7 @@ export default function Transactions() {
           </form>
         </div>
       </div>
-      
+
       {/* RIGHT COLUMN: Table */}
       <div className="lg:col-span-2">
         <div className="bg-white rounded-lg shadow-md overflow-hidden">
@@ -247,38 +245,38 @@ export default function Transactions() {
                 ) : (
                   transactions.map((tx) => (
                     <tr key={tx.id} className="hover:bg-blue-50/50 border-b last:border-0 transition-colors">
-                      
+
                       {/* DATE: Vibrant Indigo */}
                       <td className="p-4 text-sm font-bold text-black-900">
                         {new Date(tx.transaction_date).toLocaleDateString()}
                       </td>
-                      
+
                       {/* CATEGORY: Dynamic Colored Pill */}
                       <td className="p-4 text-sm">
                         <span className={`px-3 py-1 rounded-full text-xs font-bold tracking-wide ${getCategoryStyle(tx.category)}`}>
                           {tx.category}
                         </span>
                       </td>
-                      
+
                       {/* DESCRIPTION: Darker Slate for contrast */}
                       <td className="p-4 text-sm font-medium text-slate-700 truncate max-w-xs">
                         {tx.description || '-'}
                       </td>
-                      
+
                       {/* AMOUNT: Kept Red/Green */}
                       <td className={`p-4 text-sm font-extrabold text-right ${tx.type === 'Income' ? 'text-green-600' : 'text-red-600'}`}>
                         {tx.type === 'Income' ? '+' : '-'}₹{tx.amount.toFixed(2)}
                       </td>
-                      
+
                       {/* ACTIONS: Kept Blue/Red */}
                       <td className="p-4 text-center space-x-3">
-                        <button 
+                        <button
                           onClick={() => handleEdit(tx)}
                           className="text-blue-600 hover:text-blue-800 text-sm font-bold transition-colors"
                         >
                           Edit
                         </button>
-                        <button 
+                        <button
                           onClick={() => handleDelete(tx.id)}
                           className="text-red-500 hover:text-red-700 text-sm font-bold transition-colors"
                         >
